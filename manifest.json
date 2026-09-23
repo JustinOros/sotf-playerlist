@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ToniMacaroni/RedLoader/main/MetadataSchema.json",
+  "id": "PlayerList",
+  "name": "PlayerList",
+  "author": "JustinOros",
+  "version": "1.0.0",
+  "description": "Hold TAB to see the players connected to the server",
+  "gameVersion": "1.0.0",
+  "platform": "Client",
+  "type": "Mod"
+}
