@@ -6,7 +6,6 @@ Hold TAB to see a list of the players connected to your Sons of the Forest game.
 
 
 
-!\[PlayerList](screenshot.png)
 
 
 
