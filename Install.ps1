@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
-    [string]$GameDir
+    [string]$GameDir,
+    [switch]$Remove
 )
 
 $ErrorActionPreference = 'Stop'
@@ -61,72 +62,7 @@ try {
     }
     Write-Host "  found: $GameDir" -ForegroundColor Green
 
-    $needsFirstLaunch = $false
-
-    Write-Step 'Checking for RedLoader'
-    if (Test-Path (Join-Path $GameDir '_RedLoader\net6\SonsSdk.dll')) {
-        Write-Host '  already installed' -ForegroundColor Green
-    }
-    else {
-        Write-Host '  not installed, downloading it now'
-        $rlZip = Join-Path $env:TEMP 'RedLoader.zip'
-        Get-ReleaseZip -Repo 'ToniMacaroni/RedLoader' -Pattern '^RedLoader.*\.zip$' -OutFile $rlZip | Out-Null
-
-        $rlStage = Join-Path $env:TEMP 'redloader-stage'
-        if (Test-Path $rlStage) { Remove-Item $rlStage -Recurse -Force }
-        Expand-Archive -Path $rlZip -DestinationPath $rlStage -Force
-        Copy-Item -Path (Join-Path $rlStage '*') -Destination $GameDir -Recurse -Force
-        Remove-Item $rlZip -Force -ErrorAction SilentlyContinue
-        Remove-Item $rlStage -Recurse -Force -ErrorAction SilentlyContinue
-        Write-Host '  installed' -ForegroundColor Green
-        $needsFirstLaunch = $true
-    }
-
-    Write-Step 'Downloading PlayerList'
-    $modZip = Join-Path $env:TEMP 'PlayerList.zip'
-    Get-ReleaseZip -Repo 'JustinOros/sotf-playerlist' -Pattern '^PlayerList\.zip$' -OutFile $modZip | Out-Null
-
-    Write-Step 'Installing PlayerList'
-    $modsDir = Join-Path $GameDir 'Mods'
-    New-Item -ItemType Directory -Force -Path $modsDir | Out-Null
-    Remove-Item (Join-Path $modsDir 'PlayerList.dll') -Force -ErrorAction SilentlyContinue
-    Remove-Item (Join-Path $modsDir 'PlayerList') -Recurse -Force -ErrorAction SilentlyContinue
-    Expand-Archive -Path $modZip -DestinationPath $modsDir -Force
-    Remove-Item $modZip -Force -ErrorAction SilentlyContinue
-
-    if (-not (Test-Path (Join-Path $modsDir 'PlayerList.dll'))) {
-        throw 'Something went wrong, PlayerList.dll is not in the Mods folder'
-    }
-    if (-not (Test-Path (Join-Path $modsDir 'PlayerList\manifest.json'))) {
-        throw 'Something went wrong, manifest.json is not in the Mods\PlayerList folder'
-    }
-    Write-Host '  installed' -ForegroundColor Green
-
-    Write-Host ''
-    Write-Host '====================================' -ForegroundColor Green
-    Write-Host ' Done' -ForegroundColor Green
-    Write-Host '====================================' -ForegroundColor Green
-    Write-Host ''
-
-    if ($needsFirstLaunch) {
-        Write-Host 'RedLoader was installed for the first time, so the next time you start'
-        Write-Host 'the game it will take a few extra minutes to get ready. That is normal.'
-        Write-Host ''
-    }
-
-    Write-Host 'Start Sons of the Forest, then:'
-    Write-Host '  1. Check that MODS appears on the main menu and lists PlayerList'
-    Write-Host '  2. Join or host a multiplayer game'
-    Write-Host '  3. Hold TAB to see the connected players'
-    Write-Host ''
-}
-catch {
-    Write-Host ''
-    Write-Host "Install failed: $($_.Exception.Message)" -ForegroundColor Red
-    if ($_.Exception.Message -match 'denied') {
-        Write-Host 'Try again from PowerShell opened with Run as administrator.' -ForegroundColor Yellow
-    }
-    Write-Host ''
-}
-
-Read-Host 'Press Enter to close' | Out-Null
+    if ($Remove) {
+        Write-Step 'Removing PlayerList'
+        $modsDir = Join-Path $GameDir 'Mods'
+        $dll = Join-Path

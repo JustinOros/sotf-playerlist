@@ -64,6 +64,17 @@ Press F1 to open the console, then use these commands:
 
 The key is saved to `UserData\PlayerList.txt` in your game folder.
 
+## Uninstall
+
+Close the game, open PowerShell and paste:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/JustinOros/sotf-playerlist/main/Install.ps1))) -Remove
+```
+
+Or from a clone of this repo, run `.\Install.ps1 -Remove`. This removes only
+PlayerList and its settings. RedLoader and your other mods are left alone.
+
 ## Building from source
 
 Requires the .NET 8 SDK and RedLoader installed with its game assemblies
