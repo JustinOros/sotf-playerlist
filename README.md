@@ -1,5 +1,7 @@
 # PlayerList
 
+[![Downloads](https://img.shields.io/github/downloads/JustinOros/sotf-playerlist/total?label=downloads)](https://github.com/JustinOros/sotf-playerlist/releases) [![Latest](https://img.shields.io/github/v/release/JustinOros/sotf-playerlist?label=latest)](https://github.com/JustinOros/sotf-playerlist/releases/latest)
+
 Hold TAB to see a list of the players connected to your Sons of the Forest game.
 
 ## Multiplayer
